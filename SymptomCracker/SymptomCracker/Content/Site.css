@@ -1,12 +1,15 @@
 body {
     padding-top: 20px;
     padding-bottom: 20px;
+    background-color: #E6E1DA;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 0px;
     padding-right: 0px;
+    font-family: Georgia, serif;
+    font-size: medium;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -14,6 +17,17 @@ body {
 */
 .dl-horizontal dt {
     white-space: normal;
+}
+
+/* Extend bootstrap navbar.*/
+.navbar-nav{
+  font-family: Georgia, serif;
+  font-size: medium;
+  color: black;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: #F2F2F2;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
