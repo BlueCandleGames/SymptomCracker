@@ -2,25 +2,46 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="jumbotron" align="center">
+    <font size=7>Symptom Cracker</font>
+    <p class="lead">Take control of your life.</p>
+    <p><a class="btn btn-success btn-lg" href=@Url.Action("Register", "Account")>Start Cracking</a></p>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <h2>Getting started</h2>
+
+    <div class="BlockElement col-md-4" align="center">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <h3><strong>Log your symptoms</strong></h3>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            Quickly add or remove symptoms of your illness for your reference. Build a living diary of your symptoms as they appear, as they
+            grow, or as they fade over time.
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
     </div>
-    <div class="col-md-6">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
+    <div class="BlockElement col-md-4" align="center">
+        <span class="glyphicon glyphicon-retweet"></span>
+        <h3><strong>Change your lifestyle</strong></h3>
+        <p>
+            Decide to do something differently. Whether it be through change in diet, change in routine, or change in attitude,
+            attempt to improve your life in small, positive ways.
+        </p>
     </div>
+
+    <div class="BlockElement col-md-4" align="center">
+        <span class="glyphicon glyphicon-ok"></span>
+        <h3><strong>Crack your illness</strong></h3>
+        <p>
+            By taking a results-oriented approach to your illness, you will hopefully find ways to reduce symptoms. A symptom-free life
+            will result in a healthier, happier you.
+        </p>
+    </div>
+
 </div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+    $(".BlockElement").hide().delay(1200).each(function (index) {
+        $(this).delay(1000 * index).fadeIn(800);
+    });
+</script>
