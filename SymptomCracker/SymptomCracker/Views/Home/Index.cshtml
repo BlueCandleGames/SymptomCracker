@@ -12,7 +12,7 @@
 
     <div class="BlockElement col-md-4" align="center">
         <span class="glyphicon glyphicon-pencil"></span>
-        <h3><strong>Log your symptoms</strong></h3>
+        <h3><strong>Log your condition</strong></h3>
         <p>
             Quickly add or remove symptoms of your illness for your reference. Build a living diary of your symptoms as they appear, as they
             grow, or as they fade over time.
@@ -30,7 +30,7 @@
 
     <div class="BlockElement col-md-4" align="center">
         <span class="glyphicon glyphicon-ok"></span>
-        <h3><strong>Crack your illness</strong></h3>
+        <h3><strong>Crack your symptoms</strong></h3>
         <p>
             By taking a results-oriented approach to your illness, you will hopefully find ways to reduce symptoms. A symptom-free life
             will result in a healthier, happier you.
@@ -39,9 +39,11 @@
 
 </div>
 
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
     $(".BlockElement").hide().delay(1200).each(function (index) {
         $(this).delay(1000 * index).fadeIn(800);
     });
+
+    $(".jumbotron").hide().fadeIn(1000);
+
 </script>

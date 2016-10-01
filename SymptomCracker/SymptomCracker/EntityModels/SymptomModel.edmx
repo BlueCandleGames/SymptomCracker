@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SymptomModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="SymptomModelStoreContainer">
+    <EntitySet Name="Conditions" EntityType="SymptomModel.Store.Conditions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Symptoms" EntityType="SymptomModel.Store.Symptoms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Notes" EntityType="SymptomModel.Store.Notes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Experiments" EntityType="SymptomModel.Store.Experiments" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ExperimentSymptom" EntityType="SymptomModel.Store.ExperimentSymptom" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ConditionSymptom" Association="SymptomModel.Store.ConditionSymptom">
+      <End Role="Condition" EntitySet="Conditions" />
+      <End Role="Symptom" EntitySet="Symptoms" />
+    </AssociationSet>
+    <AssociationSet Name="ConditionProblem" Association="SymptomModel.Store.ConditionProblem">
+      <End Role="Condition" EntitySet="Conditions" />
+      <End Role="Problem" EntitySet="Notes" />
+    </AssociationSet>
+    <AssociationSet Name="SymptomProblem" Association="SymptomModel.Store.SymptomProblem">
+      <End Role="Symptom" EntitySet="Symptoms" />
+      <End Role="Problem" EntitySet="Notes" />
+    </AssociationSet>
+    <AssociationSet Name="ExperimentNote" Association="SymptomModel.Store.ExperimentNote">
+      <End Role="Experiment" EntitySet="Experiments" />
+      <End Role="NoteTemplate" EntitySet="Notes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExperimentSymptom_Experiment" Association="SymptomModel.Store.FK_ExperimentSymptom_Experiment">
+      <End Role="Experiment" EntitySet="Experiments" />
+      <End Role="ExperimentSymptom" EntitySet="ExperimentSymptom" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExperimentSymptom_Symptom" Association="SymptomModel.Store.FK_ExperimentSymptom_Symptom">
+      <End Role="Symptom" EntitySet="Symptoms" />
+      <End Role="ExperimentSymptom" EntitySet="ExperimentSymptom" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Conditions">
+    <Key>
+      <PropertyRef Name="ConditionId" />
+    </Key>
+    <Property Name="ConditionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Severity" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Note_NoteId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Symptoms">
+    <Key>
+      <PropertyRef Name="SymptomId" />
+    </Key>
+    <Property Name="SymptomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConditionId" Type="int" Nullable="false" />
+    <Property Name="Severity" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Note_NoteId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Notes">
+    <Key>
+      <PropertyRef Name="NoteId" />
+    </Key>
+    <Property Name="NoteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateStarted" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateEnded" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Experiments">
+    <Key>
+      <PropertyRef Name="ExperimentId" />
+    </Key>
+    <Property Name="ExperimentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Note_NoteId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ExperimentSymptom">
+    <Key>
+      <PropertyRef Name="Experiments_ExperimentId" />
+      <PropertyRef Name="Symptoms_SymptomId" />
+    </Key>
+    <Property Name="Experiments_ExperimentId" Type="int" Nullable="false" />
+    <Property Name="Symptoms_SymptomId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="ConditionSymptom">
+    <End Role="Condition" Type="SymptomModel.Store.Conditions" Multiplicity="1" />
+    <End Role="Symptom" Type="SymptomModel.Store.Symptoms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Condition">
+        <PropertyRef Name="ConditionId" />
+      </Principal>
+      <Dependent Role="Symptom">
+        <PropertyRef Name="ConditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ConditionProblem">
+    <End Role="Condition" Type="SymptomModel.Store.Conditions" Multiplicity="*" />
+    <End Role="Problem" Type="SymptomModel.Store.Notes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Problem">
+        <PropertyRef Name="NoteId" />
+      </Principal>
+      <Dependent Role="Condition">
+        <PropertyRef Name="Note_NoteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SymptomProblem">
+    <End Role="Symptom" Type="SymptomModel.Store.Symptoms" Multiplicity="*" />
+    <End Role="Problem" Type="SymptomModel.Store.Notes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Problem">
+        <PropertyRef Name="NoteId" />
+      </Principal>
+      <Dependent Role="Symptom">
+        <PropertyRef Name="Note_NoteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ExperimentNote">
+    <End Role="Experiment" Type="SymptomModel.Store.Experiments" Multiplicity="*" />
+    <End Role="NoteTemplate" Type="SymptomModel.Store.Notes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="NoteTemplate">
+        <PropertyRef Name="NoteId" />
+      </Principal>
+      <Dependent Role="Experiment">
+        <PropertyRef Name="Note_NoteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExperimentSymptom_Experiment">
+    <End Role="Experiment" Type="SymptomModel.Store.Experiments" Multiplicity="1" />
+    <End Role="ExperimentSymptom" Type="SymptomModel.Store.ExperimentSymptom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Experiment">
+        <PropertyRef Name="ExperimentId" />
+      </Principal>
+      <Dependent Role="ExperimentSymptom">
+        <PropertyRef Name="Experiments_ExperimentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExperimentSymptom_Symptom">
+    <End Role="ExperimentSymptom" Type="SymptomModel.Store.ExperimentSymptom" Multiplicity="*" />
+    <End Role="Symptom" Type="SymptomModel.Store.Symptoms" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Symptom">
+        <PropertyRef Name="SymptomId" />
+      </Principal>
+      <Dependent Role="ExperimentSymptom">
+        <PropertyRef Name="Symptoms_SymptomId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="SymptomModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="SymptomModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Conditions" EntityType="SymptomModel.Condition" />
+          <EntitySet Name="Symptoms" EntityType="SymptomModel.Symptom" />
+          <EntitySet Name="Notes" EntityType="SymptomModel.Note" />
+          <AssociationSet Name="ConditionSymptom" Association="SymptomModel.ConditionSymptom">
+            <End Role="Condition" EntitySet="Conditions" />
+            <End Role="Symptom" EntitySet="Symptoms" />
+          </AssociationSet>
+          <AssociationSet Name="ConditionProblem" Association="SymptomModel.ConditionProblem">
+            <End Role="Condition" EntitySet="Conditions" />
+            <End Role="Problem" EntitySet="Notes" />
+          </AssociationSet>
+          <AssociationSet Name="SymptomProblem" Association="SymptomModel.SymptomProblem">
+            <End Role="Symptom" EntitySet="Symptoms" />
+            <End Role="Problem" EntitySet="Notes" />
+          </AssociationSet>
+          <EntitySet Name="Experiments" EntityType="SymptomModel.Experiment" />
+          <AssociationSet Name="ExperimentNote" Association="SymptomModel.ExperimentNote">
+            <End Role="Experiment" EntitySet="Experiments" />
+            <End Role="NoteTemplate" EntitySet="Notes" />
+          </AssociationSet>
+          <AssociationSet Name="ExperimentSymptom" Association="SymptomModel.ExperimentSymptom">
+            <End Role="Experiment" EntitySet="Experiments" />
+            <End Role="Symptom" EntitySet="Symptoms" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Condition">
+          <Key>
+            <PropertyRef Name="ConditionId" />
+          </Key>
+          <Property Name="ConditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Severity" Type="String" Nullable="false" />
+          <NavigationProperty Name="Symptoms" Relationship="SymptomModel.ConditionSymptom" FromRole="Condition" ToRole="Symptom" />
+          <NavigationProperty Name="Note" Relationship="SymptomModel.ConditionProblem" FromRole="Condition" ToRole="Problem" />
+        </EntityType>
+        <EntityType Name="Symptom">
+          <Key>
+            <PropertyRef Name="SymptomId" />
+          </Key>
+          <Property Name="SymptomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConditionId" Type="Int32" Nullable="false" />
+          <Property Name="Severity" Type="String" Nullable="false" />
+          <NavigationProperty Name="Condition" Relationship="SymptomModel.ConditionSymptom" FromRole="Symptom" ToRole="Condition" />
+          <NavigationProperty Name="Note" Relationship="SymptomModel.SymptomProblem" FromRole="Symptom" ToRole="Problem" />
+          <NavigationProperty Name="Experiments" Relationship="SymptomModel.ExperimentSymptom" FromRole="Symptom" ToRole="Experiment" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="NoteId" />
+          </Key>
+          <Property Name="NoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="DateStarted" Type="String" Nullable="false" />
+          <Property Name="DateEnded" Type="String" Nullable="false" />
+          <NavigationProperty Name="Condition" Relationship="SymptomModel.ConditionProblem" FromRole="Problem" ToRole="Condition" />
+          <NavigationProperty Name="Symptom" Relationship="SymptomModel.SymptomProblem" FromRole="Problem" ToRole="Symptom" />
+          <NavigationProperty Name="Experiment" Relationship="SymptomModel.ExperimentNote" FromRole="NoteTemplate" ToRole="Experiment" />
+        </EntityType>
+        <Association Name="ConditionSymptom">
+          <End Type="SymptomModel.Condition" Role="Condition" Multiplicity="1" />
+          <End Type="SymptomModel.Symptom" Role="Symptom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Condition">
+              <PropertyRef Name="ConditionId" />
+            </Principal>
+            <Dependent Role="Symptom">
+              <PropertyRef Name="ConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ConditionProblem">
+          <End Type="SymptomModel.Condition" Role="Condition" Multiplicity="1" />
+          <End Type="SymptomModel.Note" Role="Problem" Multiplicity="1" />
+        </Association>
+        <Association Name="SymptomProblem">
+          <End Type="SymptomModel.Symptom" Role="Symptom" Multiplicity="1" />
+          <End Type="SymptomModel.Note" Role="Problem" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Experiment">
+          <Key>
+            <PropertyRef Name="ExperimentId" />
+          </Key>
+          <Property Name="ExperimentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Note" Relationship="SymptomModel.ExperimentNote" FromRole="Experiment" ToRole="NoteTemplate" />
+          <NavigationProperty Name="Symptoms" Relationship="SymptomModel.ExperimentSymptom" FromRole="Experiment" ToRole="Symptom" />
+        </EntityType>
+        <Association Name="ExperimentNote">
+          <End Type="SymptomModel.Experiment" Role="Experiment" Multiplicity="1" />
+          <End Type="SymptomModel.Note" Role="NoteTemplate" Multiplicity="1" />
+        </Association>
+        <Association Name="ExperimentSymptom">
+          <End Type="SymptomModel.Experiment" Role="Experiment" Multiplicity="*" />
+          <End Type="SymptomModel.Symptom" Role="Symptom" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SymptomModelStoreContainer" CdmEntityContainer="SymptomModelContainer">
+    <EntitySetMapping Name="Conditions">
+      <EntityTypeMapping TypeName="IsTypeOf(SymptomModel.Condition)">
+        <MappingFragment StoreEntitySet="Conditions">
+          <ScalarProperty Name="ConditionId" ColumnName="ConditionId" />
+          <ScalarProperty Name="Severity" ColumnName="Severity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Symptoms">
+      <EntityTypeMapping TypeName="IsTypeOf(SymptomModel.Symptom)">
+        <MappingFragment StoreEntitySet="Symptoms">
+          <ScalarProperty Name="SymptomId" ColumnName="SymptomId" />
+          <ScalarProperty Name="ConditionId" ColumnName="ConditionId" />
+          <ScalarProperty Name="Severity" ColumnName="Severity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Notes">
+      <EntityTypeMapping TypeName="IsTypeOf(SymptomModel.Note)">
+        <MappingFragment StoreEntitySet="Notes">
+          <ScalarProperty Name="NoteId" ColumnName="NoteId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateStarted" ColumnName="DateStarted" />
+          <ScalarProperty Name="DateEnded" ColumnName="DateEnded" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Experiments">
+      <EntityTypeMapping TypeName="IsTypeOf(SymptomModel.Experiment)">
+        <MappingFragment StoreEntitySet="Experiments">
+          <ScalarProperty Name="ExperimentId" ColumnName="ExperimentId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ConditionProblem" TypeName="SymptomModel.ConditionProblem" StoreEntitySet="Conditions">
+      <EndProperty Name="Problem">
+        <ScalarProperty Name="NoteId" ColumnName="Note_NoteId" />
+      </EndProperty>
+      <EndProperty Name="Condition">
+        <ScalarProperty Name="ConditionId" ColumnName="ConditionId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SymptomProblem" TypeName="SymptomModel.SymptomProblem" StoreEntitySet="Symptoms">
+      <EndProperty Name="Problem">
+        <ScalarProperty Name="NoteId" ColumnName="Note_NoteId" />
+      </EndProperty>
+      <EndProperty Name="Symptom">
+        <ScalarProperty Name="SymptomId" ColumnName="SymptomId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ExperimentNote" TypeName="SymptomModel.ExperimentNote" StoreEntitySet="Experiments">
+      <EndProperty Name="NoteTemplate">
+        <ScalarProperty Name="NoteId" ColumnName="Note_NoteId" />
+      </EndProperty>
+      <EndProperty Name="Experiment">
+        <ScalarProperty Name="ExperimentId" ColumnName="ExperimentId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ExperimentSymptom" TypeName="SymptomModel.ExperimentSymptom" StoreEntitySet="ExperimentSymptom">
+      <EndProperty Name="Experiment">
+        <ScalarProperty Name="ExperimentId" ColumnName="Experiments_ExperimentId" />
+      </EndProperty>
+      <EndProperty Name="Symptom">
+        <ScalarProperty Name="SymptomId" ColumnName="Symptoms_SymptomId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
